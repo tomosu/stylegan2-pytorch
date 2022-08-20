@@ -124,6 +124,8 @@ def set_grad_none(model, targets):
 
 
 def train(args, loader, generator, discriminator, g_optim, d_optim, g_ema, device):
+    outdir =args.outdir
+    
     loader = sample_data(loader)
 
     pbar = range(args.iter)
@@ -308,13 +310,13 @@ def train(args, loader, generator, discriminator, g_optim, d_optim, g_ema, devic
                     sample, _ = g_ema([sample_z])
                     utils.save_image(
                         sample,
-                        f"sample/{str(i).zfill(6)}.png",
+                        f"{outdir}/{str(i).zfill(6)}.png",
                         nrow=int(args.n_sample ** 0.5),
                         normalize=True,
                         range=(-1, 1),
                     )
 
-            if i % 10000 == 0:
+            if i % 1000 == 0:
                 torch.save(
                     {
                         "g": g_module.state_dict(),
@@ -325,7 +327,7 @@ def train(args, loader, generator, discriminator, g_optim, d_optim, g_ema, devic
                         "args": args,
                         "ada_aug_p": ada_aug_p,
                     },
-                    f"checkpoint/{str(i).zfill(6)}.pt",
+                    f"{outdir}/{str(i).zfill(6)}.pt",
                 )
 
 
@@ -335,6 +337,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="StyleGAN2 trainer")
 
     parser.add_argument("path", type=str, help="path to the lmdb dataset")
+    parser.add_argument('--outdir', type=str, default='checkpoint', help='output dir of sample & ckpt')
     parser.add_argument('--arch', type=str, default='stylegan2', help='model architectures (stylegan2 | swagan)')
     parser.add_argument(
         "--iter", type=int, default=800000, help="total training iterations"
