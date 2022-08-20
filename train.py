@@ -491,8 +491,8 @@ if __name__ == "__main__":
         discriminator.load_state_dict(ckpt["d"], strict=False)
         g_ema.load_state_dict(ckpt["g_ema"], strict=False)
 
-        g_optim.load_state_dict(ckpt["g_optim"], strict=False)
-        d_optim.load_state_dict(ckpt["d_optim"], strict=False)
+        g_optim.load_state_dict(ckpt["g_optim"])
+        d_optim.load_state_dict(ckpt["d_optim"])
 
     if args.distributed:
         generator = nn.parallel.DistributedDataParallel(
