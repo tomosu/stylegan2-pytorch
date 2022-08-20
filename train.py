@@ -487,12 +487,12 @@ if __name__ == "__main__":
         except ValueError:
             pass
 
-        generator.load_state_dict(ckpt["g"])
-        discriminator.load_state_dict(ckpt["d"])
-        g_ema.load_state_dict(ckpt["g_ema"])
+        generator.load_state_dict(ckpt["g"], strict=False)
+        discriminator.load_state_dict(ckpt["d"], strict=False)
+        g_ema.load_state_dict(ckpt["g_ema"], strict=False)
 
-        g_optim.load_state_dict(ckpt["g_optim"])
-        d_optim.load_state_dict(ckpt["d_optim"])
+        g_optim.load_state_dict(ckpt["g_optim"], strict=False)
+        d_optim.load_state_dict(ckpt["d_optim"], strict=False)
 
     if args.distributed:
         generator = nn.parallel.DistributedDataParallel(
