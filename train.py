@@ -389,7 +389,8 @@ if __name__ == "__main__":
         default=None,
         help="path to the checkpoints to resume training",
     )
-    parser.add_argument("--lr", type=float, default=0.002, help="learning rate")
+    parser.add_argument("--glr", type=float, default=0.002, help="generator's learning rate")
+    parser.add_argument("--dlr", type=float, default=0.001, help="discriminator's learning rate")
     parser.add_argument(
         "--channel_multiplier",
         type=int,
@@ -468,12 +469,12 @@ if __name__ == "__main__":
 
     g_optim = optim.Adam(
         generator.parameters(),
-        lr=args.lr * g_reg_ratio,
+        lr=args.glr * g_reg_ratio,
         betas=(0 ** g_reg_ratio, 0.99 ** g_reg_ratio),
     )
     d_optim = optim.Adam(
         discriminator.parameters(),
-        lr=args.lr * d_reg_ratio,
+        lr=args.dlr * d_reg_ratio,
         betas=(0 ** d_reg_ratio, 0.99 ** d_reg_ratio),
     )
 
